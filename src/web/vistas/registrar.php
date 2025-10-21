@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Prueba técnica KAWAK
+ * Realiza proceso de autenticación (login) de usuarios.
+ *
+ * @author John Mejía
+ */
+
 $request = new Request();
 $web = new WebSupport();
 $session = obtener_session();

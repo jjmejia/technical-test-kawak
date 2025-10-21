@@ -1,3 +1,13 @@
+<?php
+
+/**
+ * Prueba técnica KAWAK
+ * Página para permitir la autenticación (login) de usuarios.
+ *
+ * @author John Mejía
+ */
+
+?>
 <style>
 	body {
 		display: flex;

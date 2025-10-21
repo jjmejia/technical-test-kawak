@@ -50,6 +50,23 @@ class UserSession
 	}
 
 	/**
+	 * Elimina datos de sesión.
+	 */
+	public function delete(string $name, mixed $default = false): bool
+	{
+		if (
+			!empty($_SESSION[$this->prefix]) &&
+			is_array($_SESSION[$this->prefix]) &&
+			array_key_exists($name, $_SESSION[$this->prefix])
+		) {
+			unset($_SESSION[$this->prefix][$name]);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Token único para validar acciones delicadas.
 	 */
 	function csrf(bool $force_creation = false)
