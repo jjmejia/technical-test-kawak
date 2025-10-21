@@ -30,7 +30,12 @@ class WebSupport
 
 			// Previene se invoque un archivo no valido
 			if ($view_filename === '' || !is_file($view_filename)) {
-				throw new Exception("El archivo de vista indicado {$view_filename} no existe");
+				// Previene se muestre el root
+				$info_filename = str_replace(
+					str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']), '',
+					str_replace('\\', '/', $view_filename)
+				);
+				throw new Exception("El archivo de vista indicado {$info_filename} no existe");
 			}
 
 			if (count($view_args) > 0) {
