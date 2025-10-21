@@ -95,6 +95,34 @@ $docs = $bdd->bddQuery(
 		display: inline-block;
 	}
 
+	    .search-bar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      gap: 0.5rem;
+    }
+
+    .search-bar input {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 70%;
+      font-size: 1rem;
+    }
+
+    .search-bar button {
+      padding: 0.5rem 1rem;
+      background-color: var(--color-secundario);
+      border: none;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .search-bar button:hover {
+      background-color: var(--color-primario);
+    }
+
 	@media (max-width: 600px) {
 
 		table,
@@ -149,6 +177,11 @@ $docs = $bdd->bddQuery(
 
 <main>
 	<button class="add-btn" onclick="agregarRegistro()">+ Agregar nuevo</button>
+
+	<div class="search-bar">
+      <input type="text" id="buscar" placeholder="Buscar registro por nombre...">
+      <button onclick="buscarRegistro()">Buscar</button>
+    </div>
 
 	<table id="tablaDatos">
 		<thead>

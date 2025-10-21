@@ -25,7 +25,12 @@ try {
 	$datos = ['mensaje' => "La vista solicitada no existe ({$accion})"];
 
 	// Valida las acciones para determinar la vista a mostrar:
-	if ($accion === '' || $accion === 'index.php' || !$session->get('user-auth-ok')) {
+	if ($accion === 'registrar') {
+		// * Permite registro
+		$vista = $accion;
+		$datos = [];
+	}
+	elseif ($accion === '' || $accion === 'index.php' || !$session->get('user-auth-ok')) {
 		if (!$session->get('user-auth-ok')) {
 			// * Visualiza login si no está registrado
 			$vista = 'login';
