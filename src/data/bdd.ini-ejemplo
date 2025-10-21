@@ -1,0 +1,7 @@
+; Forma de uso:
+; Edite este archivo con los datos de acceso a su base de datos y cambie el nombre a "bdd.ini"
+
+servidor="xxxxx"
+bdd="kawak"
+usuario="user"
+password="xxxxx"

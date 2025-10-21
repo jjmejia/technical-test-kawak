@@ -1,0 +1,33 @@
+/* Colores aproximados basados en el sitio */
+:root {
+	--color-primario: #003366;
+	/* azul oscuro aproximado */
+	--color-secundario: #00a8e8;
+	/* azul claro/acento aproximado */
+	--color-fondo: #f9f9f9;
+	/* fondo claro */
+	--color-texto: #333333;
+	/* texto oscuro */
+	--font-base: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: var(--font-base);
+	background-color: var(--color-fondo);
+	color: var(--color-texto);
+}
+
+.contenedor-error {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+@media (max-width: 480px) {
+	.login-container {
+		padding: 1.5rem;
+	}
+}
