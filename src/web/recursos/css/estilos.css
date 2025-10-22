@@ -29,10 +29,11 @@ body {
 }
 
 .contenedor-error {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
+	margin: 2rem;
+}
+
+.contenedor-error h1 {
+	color: var(--color-primario);
 }
 
 header {

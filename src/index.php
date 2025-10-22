@@ -29,12 +29,15 @@ try {
 		// * Permite registro
 		$vista = $accion;
 		$datos = [];
-	}
-	elseif ($accion === '' || $accion === 'index.php' || !$session->get('user-auth-ok')) {
+	} elseif ($accion === '' || $accion === 'index.php' || !$session->get('user-auth-ok')) {
 		if (!$session->get('user-auth-ok')) {
 			// * Visualiza login si no está registrado
-			$vista = 'login';
-			$datos = ['mensaje' => ''];
+			if ($accion === '' || $accion === 'index.php') {
+				$vista = 'login';
+				$datos = ['mensaje' => ''];
+			} else {
+				$datos = ['mensaje' => 'Por favor, inicie sesión para continuar.'];
+			}
 		} else {
 			// * Visualiza listado de documentos si ya está registrado
 			$vista = 'listado';
@@ -46,10 +49,17 @@ try {
 		$vista = $accion;
 		$datos = [];
 	}
-
+	// Ejecuta script solicitado y visualiza página web
 	$web->showContent($vista, $datos);
 } catch (Exception $e) {
 	// Forza mensaje de error a pantalla
+	$vista = 'error';
 	$mensaje = $e->getMessage();
-	include implode(DIRECTORY_SEPARATOR, [__DIR__, 'web', 'vistas', 'error.php']);
+	// Si el error es producido al mostrar cualquier vista (incluida la de error),
+	// intenta mostrar el mensaje sin "adornos", usando el $mensaje original
+	try {
+		$web->showContent($vista, compact('mensaje'));
+	} catch (Exception $em) {
+		include implode(DIRECTORY_SEPARATOR, [__DIR__, 'web', 'vistas', 'error.php']);
+	}
 }

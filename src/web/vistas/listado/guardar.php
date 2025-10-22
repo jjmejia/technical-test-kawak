@@ -164,7 +164,7 @@ if ($success) {
 		]
 	);
 	if (!empty($docs['doc_id'])) {
-		json_response(500, "El nombre del documento ya existe para el tipo y proceso indicados. {$docs['doc_id']}");
+		json_response(500, "El nombre del documento ya existe para el tipo y proceso indicados.");
 	}
 
 	// Error desconocido
