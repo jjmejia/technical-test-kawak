@@ -38,6 +38,10 @@ CREATE TABLE `doc_documento` (
 COLLATE='utf8_spanish_ci'
 ;
 
+/* Adiciona indice único para nombre */
+ALTER TABLE `doc_documento`
+	ADD UNIQUE INDEX `doc_nombre` (`doc_nombre`, `doc_id_tipo`, `doc_id_proceso`);
+
 /* Inserta valores preliminares */
 
 INSERT INTO `kawak`.`tip_tipo_doc` (`tip_prefijo`, `tip_nombre`) VALUES ('INS', 'Instructivo');

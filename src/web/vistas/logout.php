@@ -12,4 +12,5 @@ $web = new WebSupport();
 $session = obtener_session();
 $session->delete('user-auth-ok');
 
-$web->reload('', ['mensaje' => 'Sesión terminada por el usuario']);
+$session->saveReloadParams(['message' => 'Ha cerrado sesión correctamente.']);
+$web->reload();

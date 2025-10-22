@@ -3,13 +3,14 @@
 /**
  * Prueba técnica KAWAK
  * Página para permitir la autenticación (login) de usuarios.
+ * Descargo: HTML creado con asistencia de ChatGPT.
  *
  * @author John Mejía
  */
 
 ?>
 <style>
-	body {
+	.login-body {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -76,36 +77,26 @@
 	}
 </style>
 
-<div class="login-container">
-	<h2>Iniciar sesión</h2>
-	<form id="loginForm" action="<?= completar_url("registrar") ?>" method="post">
-		<div class="form-group">
-			<label for="username">Usuario</label>
-			<input type="text" id="username" name="username" required>
-		</div>
-		<div class="form-group">
-			<label for="password">Contraseña</label>
-			<input type="password" id="password" name="password" required>
-		</div>
-		<button type="submit" class="btn">Entrar</button>
-		<div class="error" id="errorMsg"><?= $mensaje ?></div>
-	</form>
+<div class="login-body">
+	<div class="login-container">
+		<h2>Iniciar sesión</h2>
+		<form id="loginForm" action="<?= completar_url("registrar") ?>" method="post">
+			<div class="form-group">
+				<label for="username">Usuario</label>
+				<input type="text" id="username" name="username" required>
+			</div>
+			<div class="form-group">
+				<label for="password">Contraseña</label>
+				<input type="password" id="password" name="password" required>
+			</div>
+			<button type="submit" class="btn">Entrar</button>
+			<div class="error" id="errorMsg"><?= $mensaje ?></div>
+		</form>
+	</div>
 </div>
 
 <script>
 	if (document.getElementById('errorMsg').html !== '') {
 		document.getElementById('errorMsg').style.display = 'block';
 	}
-	/*document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const user = document.getElementById('username').value.trim();
-      const pass = document.getElementById('password').value.trim();
-
-      // Ejemplo de validación simple (reemplaza con lógica del servidor)
-      if (user === '' || pass === '') {
-        document.getElementById('errorMsg').style.display = 'block';
-      }
-	  // Procesa resultado
-	  e.submit();
-    });*/
 </script>
