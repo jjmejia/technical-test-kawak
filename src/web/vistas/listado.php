@@ -2,6 +2,7 @@
 
 /**
  * Prueba técnica KAWAK
+ * Descargo: HTML creado con asistencia de ChatGPT.
  *
  * @author John Mejía
  */
@@ -16,174 +17,46 @@ $docs = $bdd->bddQuery(
 	FROM doc_documento
 	LEFT JOIN tip_tipo_doc ON (tip_id = doc_id_tipo)
 	LEFT JOIN pro_proceso ON (pro_id = doc_id_proceso)
-	ORDER BY doc_id desc');
+	ORDER BY doc_id desc'
+);
+
+// Valida si viene de un reload y si hay mensajes para mostrar
+$session = obtener_session();
+$message = $session->getReloadParam('message');
+$session->removeReloadParams();
 
 ?>
-<style>
-	header {
-		background-color: var(--color-primario);
-		color: white;
-		padding: 1rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		flex-wrap: wrap;
-	}
+<link rel="stylesheet" type="text/css" href="<?= completar_url('web/recursos/css/listados.css') ?>" />
 
-	header h1 {
-		margin: 0;
-		font-size: 1.5rem;
-	}
-
-	.user-info {
-		font-size: 0.9rem;
-	}
-
-	.user-info a {
-		color: var(--color-secundario);
-		text-decoration: none;
-		margin-left: 10px;
-	}
-
-	main {
-		padding: 1rem;
-		max-width: 900px;
-		margin: auto;
-	}
-
-	table {
-		width: 100%;
-		border-collapse: collapse;
-		background: white;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-		border-radius: 6px;
-		overflow: hidden;
-	}
-
-	th,
-	td {
-		text-align: left;
-		padding: 0.75rem;
-		border-bottom: 1px solid #ddd;
-	}
-
-	th {
-		background-color: var(--color-primario);
-		color: white;
-	}
-
-	tr:hover {
-		background-color: #f1f7ff;
-	}
-
-	button {
-		background-color: var(--color-secundario);
-		color: white;
-		border: none;
-		padding: 0.5rem 0.75rem;
-		border-radius: 4px;
-		cursor: pointer;
-		font-size: 0.9rem;
-	}
-
-	button:hover {
-		background-color: var(--color-primario);
-	}
-
-	.add-btn {
-		margin: 1rem 0;
-		display: inline-block;
-	}
-
-	    .search-bar {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 1.5rem;
-      gap: 0.5rem;
-    }
-
-    .search-bar input {
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      width: 70%;
-      font-size: 1rem;
-    }
-
-    .search-bar button {
-      padding: 0.5rem 1rem;
-      background-color: var(--color-secundario);
-      border: none;
-      border-radius: 4px;
-      color: white;
-      cursor: pointer;
-    }
-
-    .search-bar button:hover {
-      background-color: var(--color-primario);
-    }
-
-	@media (max-width: 600px) {
-
-		table,
-		thead,
-		tbody,
-		th,
-		td,
-		tr {
-			display: block;
-		}
-
-		th {
-			display: none;
-		}
-
-		td {
-			position: relative;
-			padding-left: 50%;
-			text-align: right;
-		}
-
-		td::before {
-			position: absolute;
-			left: 1rem;
-			top: 0.75rem;
-			white-space: nowrap;
-			font-weight: bold;
-			color: var(--color-primario);
-		}
-
-		td:nth-of-type(1)::before {
-			content: "ID";
-		}
-
-		td:nth-of-type(2)::before {
-			content: "Nombre";
-		}
-
-		td:nth-of-type(3)::before {
-			content: "Correo";
-		}
-
-		td:nth-of-type(4)::before {
-			content: "Rol";
-		}
-
-		td:nth-of-type(5)::before {
-			content: "Acciones";
-		}
-	}
-</style>
+<?php
+if (!empty($message)) {
+?>
+	<section class="panel" aria-label="Mensajes">
+		<!-- Caja informativa -->
+		<article class="msg info" id="msg-info" role="status" aria-live="polite">
+			<div class="icon" aria-hidden="true">i</div>
+			<div class="content">
+				<!-- <div class="title">Información</div> -->
+				<div class="body"><?= htmlentities($message) ?></div>
+			</div>
+			<button class="close" aria-label="Ocultar mensaje informativo" data-target="msg-info">✕</button>
+		</article>
+	</section>
+<?php
+}
+?>
 
 <main>
-	<button class="add-btn" onclick="agregarRegistro()">+ Agregar nuevo</button>
+	<div class="actions">
+		<button class="add-btn" onclick="addRecord()">+ Añadir registro</button>
 
-	<div class="search-bar">
-      <input type="text" id="buscar" placeholder="Buscar registro por nombre...">
-      <button onclick="buscarRegistro()">Buscar</button>
-    </div>
+		<div class="search-box">
+			<input type="text" id="searchInput" placeholder="Buscar...">
+			<button onclick="search()">Buscar</button>
+		</div>
+	</div>
 
-	<table id="tablaDatos">
+	<table id="dataTable">
 		<thead>
 			<tr>
 				<th>ID</th>
@@ -191,63 +64,79 @@ $docs = $bdd->bddQuery(
 				<th>Proceso</th>
 				<th>Tipo</th>
 				<th>Código</th>
+				<th>Contenido</th>
 				<th>Acciones</th>
 			</tr>
 		</thead>
 		<tbody>
+
 			<?php
+			// Lista cada uno de los registros encontrados
 			foreach ($docs as $data) {
-				print_r($data); echo "<hr>";
+				$doc_code = "{$data['tip_prefijo']}-{$data['pro_prefijo']}-{$data['doc_id']}";
 			?>
-			<tr>
-				<td>1</td>
-				<td>Juan Pérez</td>
-				<td>juan@ejemplo.com</td>
-				<td>Administrador</td>
-				<td>Administrador</td>
-				<td>
-					<button onclick="editarRegistro(this)">Editar</button>
-					<button onclick="eliminarRegistro(this)">Eliminar</button>
-				</td>
-			</tr>
+
+				<tr>
+					<td data-label="ID"><?= $data['doc_id'] ?></td>
+					<td data-label="Documento" id="docname_<?= $data['doc_id'] ?>"><?= $data['doc_nombre'] ?></td>
+					<td data-label="Proceso"><?= $data['pro_nombre'] ?></td>
+					<td data-label="Tipo"><?= $data['tip_nombre'] ?></td>
+					<td data-label="Codigo"><?= $doc_code ?></td>
+					<td data-label="Contenido"><?= $data['doc_contenido'] ?></td>
+					<td class="table-actions" data-label="Acciones">
+						<button onclick="editRecord(<?= $data['doc_id'] ?>)">Editar</button>
+						<button onclick="deleteRecord(<?= $data['doc_id'] ?>)">Eliminar</button>
+					</td>
+				</tr>
+
 			<?php
 			}
 			?>
+			</tr>
 		</tbody>
 	</table>
 </main>
 
-<form action="" method="post" id="formAccion">
-<input type="hidden" name="doc_id" id="doc_id" value="">
-<?= csrf_input_token() ?>
+<form action="" method="post" id="formAction">
+	<input type="hidden" name="doc_id" id="doc_id" value="">
 </form>
 
 <script>
-	function editarRegistro(btn) {
-		const fila = btn.closest("tr");
-		const nombre = fila.children[1].textContent;
-		alert("Editar registro de: " + nombre);
+	function exeAction(action, id) {
+		let form = document.getElementById('formAction');
+		form.action = action;
+		if (typeof id === 'undefined') {
+			id = '';
+		}
+		document.getElementById('doc_id').value = id;
+		// alert('Ejecutar: ' + action);
+		form.submit();
 	}
 
-	function eliminarRegistro(btn) {
-		const fila = btn.closest("tr");
-		const nombre = fila.children[1].textContent;
-		if (confirm("¿Eliminar a " + nombre + "?")) fila.remove();
+	function addRecord() {
+		let url = '<?= completar_url('listado/adicionar') ?>/';
+		exeAction(url);
 	}
 
-	function agregarRegistro() {
-		const tabla = document.querySelector("#tablaDatos tbody");
-		const nuevoId = tabla.rows.length + 1;
-		const fila = document.createElement("tr");
-		fila.innerHTML = `
-        <td>${nuevoId}</td>
-        <td>Nuevo Usuario</td>
-        <td>nuevo@correo.com</td>
-        <td>Usuario</td>
-        <td>
-          <button onclick="editarRegistro(this)">Editar</button>
-          <button onclick="eliminarRegistro(this)">Eliminar</button>
-        </td>`;
-		tabla.appendChild(fila);
+	function editRecord(id) {
+		let url = '<?= completar_url('listado/editar') ?>';
+		exeAction(url, id);
+	}
+
+	function deleteRecord(id) {
+		let name = document.getElementById('docname_' + id).innerHTML;
+		if (confirm('¿Deseas eliminar el registro "' + name + '" (ID ' + id + ')?')) {
+			let url = '<?= completar_url('listado/eliminar') ?>';
+			exeAction(url, id);
+		}
+	}
+
+	function search() {
+		const term = document.getElementById('searchInput').value.toLowerCase();
+		const rows = document.querySelectorAll('#dataTable tbody tr');
+		rows.forEach(row => {
+			const text = row.innerText.toLowerCase();
+			row.style.display = text.includes(term) ? '' : 'none';
+		});
 	}
 </script>

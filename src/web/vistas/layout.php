@@ -4,6 +4,7 @@
  * Layout base para páginas Web.
  *
  * Prueba técnica KAWAK
+ * Descargo: HTML creado con asistencia de ChatGPT.
  *
  * @author John Mejía
  */
@@ -19,7 +20,7 @@
 	<title>
 		Prueba CRUD KAWAK
 	</title>
-	<link rel="stylesheet" type="text/css" href="web/recursos/css/estilos.css" />
+	<link rel="stylesheet" type="text/css" href="<?= completar_url('web/recursos/css/estilos.css') ?>" />
 </head>
 
 <body>
@@ -41,7 +42,21 @@
 	<?php
 	}
 	?>
+
 	<?= $viewContents; ?>
+
+	<script>
+		// Delegación: todos los botones con clase .close ocultan la caja indicada por data-target
+		document.addEventListener('click', function(e) {
+			const btn = e.target.closest('.close');
+			if (!btn) return;
+			const id = btn.getAttribute('data-target');
+			const el = document.getElementById(id);
+			if (!el) return;
+			el.classList.add('hide');
+		});
+	</script>
+
 </body>
 
 </html>

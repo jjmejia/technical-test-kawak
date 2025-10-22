@@ -106,13 +106,16 @@ class WebSupport
 	}
 
 	/**
-	 * Recarga a la URL indicada, preservando los valores indicados
+	 * Redirige a la URL especificada.
+	 *
+	 * Para casos donde el navegador no permita la redirección automática,
+	 * se presenta un mensaje al usuario (que puede ser personalizado) y un enlace para continuar.
+	 *
+	 * @param string $url La URL a la que se redirigirá.
+	 * @param array $wait_message (Opcional) Mensaje alternativo al usuario.
 	 */
-	public function reload(string $url, array $reload_params = [], string $wait_message = '')
+	public function reload(string $url, string $wait_message = '')
 	{
-		$session = obtener_session();
-		$session->save(['reloadParams' => $reload_params]);
-
 		$html = '';
 
 		if ($wait_message == '') {
