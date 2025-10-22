@@ -15,6 +15,9 @@ class Request
 
 	public function __construct()
 	{
+		// php://input es un flujo de solo lectura que permite leer datos sin tratar
+		// desde el cuerpo de la petición
+		// Referencia: https://www.php.net/manual/es/wrappers.php.php
 		$this->raw_input = file_get_contents('php://input');
 		if (json_validate($this->raw_input)) {
 			$this->raw_data = json_decode($this->raw_input, true);
@@ -24,7 +27,11 @@ class Request
 	}
 
 	/**
-	 * Recupera valor de la variable global $_REQUEST.
+	 * Obtiene el valor de un parámetro recibido por Web, almacenado en la variable global $_REQUEST.
+	 *
+	 * @param string $nombre El nombre del parámetro a obtener.
+	 * @param string $xdefecto Valor por defecto a retornar si el parámetro no existe. Por defecto es una cadena vacía.
+	 * @return string El valor del parámetro solicitado o el valor por defecto si no existe.
 	 */
 	public function get(string $nombre, string $xdefecto = ''): string
 	{
@@ -36,13 +43,18 @@ class Request
 	}
 
 	/**
-	 * Recupera datos recibidos en el body de la consulta (sea del tipo Json o URLEncode).
-	 * Si no hay datos recibidos en el body, busca en $_REQUEST.
+	 * Recupera valor de los datos recuperados del cuerpo de la petición (pueden ser de tipo
+	 * JSON o básico URL codificado).
+	 * Si no se encuentran datos en el cuerpo de la petición, intenta obtenerlos desde $_REQUEST.
+	 *
+	 * @param string $nombre El nombre del parámetro a buscar en la solicitud.
+	 * @param string $xdefecto Valor por defecto a retornar si el parámetro no existe. Por defecto es una cadena vacía.
+	 * @return mixed Los datos procesados del cuerpo de la petición o de $_REQUEST.
 	 */
 	public function getBody(string $nombre, string $xdefecto = ''): string
 	{
 		// Valida si el parámetro solicitado existe
-		if ($this->raw_input !== '') {
+		if ($this->existsBody()) {
 			if (is_array($this->raw_data) && array_key_exists($nombre, $this->raw_data) && is_string($this->raw_data[$nombre])) {
 				return trim($this->raw_data[$nombre]);
 			}
@@ -53,7 +65,21 @@ class Request
 	}
 
 	/**
-	 * Recupera valor tipo booleano.
+	 * Verifica si existen datos recibidos en el cuerpo en la petición.
+	 *
+	 * @return bool Devuelve true si existen datos, de lo contrario false.
+	 */
+	public function existsBody(): bool
+	{
+		return ($this->raw_input !== '');
+	}
+
+	/**
+	 * Obtiene un valor booleano.
+	 *
+	 * @param string $nombre El nombre del parámetro a buscar en la solicitud.
+	 * @param string $xdefecto Valor por defecto a retornar si el parámetro no existe. Por defecto es una cadena vacía.
+	 * @return bool Retorna el valor booleano asociado al nombre proporcionado.
 	 */
 	public function getBoolean(string $nombre): bool
 	{
@@ -62,6 +88,26 @@ class Request
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Obtiene un valor numérico.
+	 *
+	 * @param string $nombre El nombre del parámetro a buscar en la solicitud.
+	 * @param string $xdefecto Valor por defecto a retornar si el parámetro no existe. Por defecto retorna cero (0).
+	 * @return bool Retorna el valor numérico asociado al nombre proporcionado.
+	 */
+	public function getNumber(string $nombre, $xdefecto = 0)
+	{
+		$valor = $this->get($nombre, '');
+		if (is_numeric($valor)) {
+			return 0 + $valor; // Asegura formato
+		}
+		elseif (is_numeric($xdefecto)) {
+			return 0 + $xdefecto;
+		}
+		// Por defecto retorna cero
+		return 0;
 	}
 
 	/**

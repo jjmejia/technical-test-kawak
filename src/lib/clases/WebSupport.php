@@ -111,10 +111,10 @@ class WebSupport
 	 * Para casos donde el navegador no permita la redirección automática,
 	 * se presenta un mensaje al usuario (que puede ser personalizado) y un enlace para continuar.
 	 *
-	 * @param string $url La URL a la que se redirigirá.
+	 * @param string $url La URL a la que se redirigirá. Si no se indica, se redirige a la página index principal.
 	 * @param array $wait_message (Opcional) Mensaje alternativo al usuario.
 	 */
-	public function reload(string $url, string $wait_message = '')
+	public function reload(string $url = '', string $wait_message = '')
 	{
 		$html = '';
 

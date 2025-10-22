@@ -9,6 +9,11 @@
  * @author John Mejía
  */
 
+// Valida si viene de un reload y si hay mensajes para mostrar
+$session = obtener_session();
+$message = $session->getReloadParam('message');
+$session->removeReloadParams();
+
 ?>
 <html>
 
@@ -39,6 +44,24 @@
 				<a href="<?= $url_logout ?>">Logout</a>
 			</div>
 		</header>
+	<?php
+	}
+	?>
+
+	<?php
+	if (!empty($message)) {
+	?>
+		<section class="panel" aria-label="Mensajes">
+			<!-- Caja informativa -->
+			<article class="msg info" id="msg-info" role="status" aria-live="polite">
+				<div class="icon" aria-hidden="true">i</div>
+				<div class="content">
+					<!-- <div class="title">Información</div> -->
+					<div class="body"><?= htmlentities($message) ?></div>
+				</div>
+				<button class="close" aria-label="Ocultar mensaje informativo" data-target="msg-info">✕</button>
+			</article>
+		</section>
 	<?php
 	}
 	?>

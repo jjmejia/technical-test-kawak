@@ -1,0 +1,96 @@
+/* Descargo: CSS creado con asistencia de ChatGPT. */
+body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+main {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+}
+
+form {
+	background-color: white;
+	padding: 2rem;
+	border-radius: 8px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	max-width: 450px;
+}
+
+form h2 {
+	color: var(--color-primario);
+	text-align: center;
+	margin-bottom: 1.5rem;
+}
+
+.form-group {
+	margin-bottom: 1rem;
+}
+
+label {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-weight: bold;
+}
+
+input,
+textarea,
+select {
+	width: 100%;
+	padding: 0.7rem;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 1rem;
+}
+
+textarea {
+	height: 120px;
+}
+
+input:focus,
+select:focus {
+	border-color: var(--color-secundario);
+	outline: none;
+}
+
+.buttons {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 1.5rem;
+}
+
+.btn {
+	padding: 0.7rem 1.5rem;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 1rem;
+}
+
+.btn-primary {
+	background-color: var(--color-secundario);
+	color: white;
+}
+
+.btn-primary:hover {
+	background-color: var(--color-primario);
+}
+
+.btn-cancel {
+	background-color: #ccc;
+	color: #333;
+}
+
+.btn-cancel:hover {
+	background-color: #aaa;
+}
+
+@media (max-width: 500px) {
+	form {
+		padding: 1.5rem;
+	}
+}

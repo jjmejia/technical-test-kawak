@@ -66,12 +66,9 @@ main {
 
 .panel {
 	width: 100%;
-	max-width: 760px;
-	/* background: #fff; */
-	/* border-radius: 10px; */
+	max-width: 100%;
 	margin: 0;
 	padding: 0;
-	/* box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06); */
 }
 
 .msg {
@@ -80,6 +77,7 @@ main {
 	border-radius: 8px;
 	margin-top: 1.25rem;
 	margin-left: 2rem;
+	margin-right: 2rem;
 	margin-bottom: 0.75rem;
 	display: flex;
 	gap: 0.75rem;
