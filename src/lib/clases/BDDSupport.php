@@ -153,6 +153,7 @@ class BDDSupport
 	 * @param array $guardar Arreglo con los valores a actualizar. Las llaves en el arreglo corresponden
 	 *     					 al nombre de la columna asociada.
 	 * @param int $tabla_id Valor del campo en la columna {$tabla}_id (usada como PRIMARY KEY).
+	 * @param string $columna_id Nombre de la columna usada como identificador (usualmente asociada al PRIMARY KEY). Por defecto es 'id'.
 	 * @return bool TRUE si pudo modificar el registro, FALSE si ocurrió algún error.
 	 */
 	public function bddEditar(string $tabla, array $guardar, int $tabla_id, string $columna_id = 'id')
@@ -198,15 +199,16 @@ class BDDSupport
 	 * @param string $tabla Nombre de la tabla.
 	 * @param array $tabla_ids Arreglo con los valores de los registros a eliminar, asociados a la columna
 	 *   					   {$tabla}_id (usada como PRIMARY KEY).
+	 * @param string $columna_id Nombre de la columna usada como identificador (usualmente asociada al PRIMARY KEY). Por defecto es 'id'.
 	 * @return bool TRUE si pudo eliminar los registros, FALSE si ocurrió algún error.
 	 */
-	public function bddRemover(string $tabla, array $tabla_ids)
+	public function bddRemover(string $tabla, array $tabla_ids, string $columna_id = 'id')
 	{
 		$resultado = false;
 		// Previene borre todos los datos con este método
 		if (count($tabla_ids) > 0) {
 			$valores = substr(str_repeat(',?', count($tabla_ids)), 1);
-			$query = "DELETE FROM {$tabla} WHERE {$tabla}_id in ({$valores})";
+			$query = "DELETE FROM {$tabla} WHERE {$columna_id} in ({$valores})";
 			$resultado = $this->ejecutarQuery($query, $tabla_ids);
 		}
 

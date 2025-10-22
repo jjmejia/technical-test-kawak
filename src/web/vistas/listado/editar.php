@@ -18,8 +18,6 @@ $doc_id = $request->getNumber('doc_id');
 $docs = [];
 
 if ($doc_id > 0) {
-	$args = [$doc_id];
-
 	$docs = $bdd->bddPrimerRegistro(
 		"SELECT
 	doc_id, doc_nombre, doc_codigo, doc_contenido,
@@ -30,7 +28,7 @@ if ($doc_id > 0) {
 	LEFT JOIN pro_proceso ON (pro_id = doc_id_proceso)
 	WHERE doc_id = ?
 	ORDER BY doc_id desc",
-		$args
+		[$doc_id]
 	);
 
 	// Modifica titulo de la página
